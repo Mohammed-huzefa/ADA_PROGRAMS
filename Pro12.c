@@ -1,47 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define MAX 20
 
-int board[20], count = 0;
+int col[MAX], n;
 
-void print(int n) {
-    int i, j;
-    printf("\nSolution %d:\n", ++count);
-
-    for (i = 1; i <= n; i++)
-        printf("\t%d", i);
-
-    for (i = 1; i <= n; i++) {
-        printf("\n%d", i);
-        for (j = 1; j <= n; j++) {
-            if (board[i] == j) printf("\tQ");
-            else printf("\t-");
-        }
-    }
-    printf("\n");
+int safe(int row, int c) {
+ int i;
+ for (i = 0; i < row; i++)
+ if (col[i] == c || abs(col[i] - c) == abs(i - row))
+ return 0;
+ return 1;
 }
 
-int place(int row, int col) {
-    for (int i = 1; i < row; i++)
-        if (board[i] == col || abs(board[i] - col) == abs(i - row))
-            return 0;
-    return 1;
+void printBoard() {
+ int i, j;
+ for (i = 0; i < n; i++) {
+ for (j = 0; j < n; j++)
+ printf("%c", col[i] == j ? 'Q' : '-');
+ printf("\n");
+ }
+ printf("\n");
 }
 
-void queen(int row, int n) {
-    for (int col = 1; col <= n; col++) {
-        if (place(row, col)) {
-            board[row] = col;
-            if (row == n) print(n);
-            else queen(row + 1, n);
-        }
-    }
+void solve(int row) {
+ int c;
+ if (row == n) {
+ printBoard();
+ return;
+ }
+ for (c = 0; c < n; c++)
+ if (safe(row, c)) {
+ col[row] = c;
+ solve(row + 1);
+ }
 }
 
 int main() {
-    int n;
-    printf("- N Queens Problem Using Backtracking -");
-    printf("\n\nEnter number of Queens: ");
-    scanf("%d", &n);
-    queen(1, n);
-    return 0;
+ printf("\nEnter the no. of queens:");
+ scanf("%d", &n);
+ solve(0);
+ return 0;
 }
