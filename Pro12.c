@@ -38,6 +38,8 @@ void solve(int row) {
 int main() {
  printf("\nEnter the no. of queens:");
  scanf("%d", &n);
+ 
  solve(0);
+ 
  return 0;
 }
